@@ -85,4 +85,11 @@ const postSignin = async (req, res) => {
     }
     
 }
-module.exports = {postSignin, postSignup, getsigninPage, getsignupPage}
+
+// logout handler
+
+const logout = (req, res) => {
+    res.cookie('jwt', '', {maxAge: 1})
+    res.redirect('/api/signin')
+}
+module.exports = {postSignin, postSignup, getsigninPage, getsignupPage, logout}
