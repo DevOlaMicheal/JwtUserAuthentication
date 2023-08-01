@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./partials/head.ejs') %>
+<body class="bg-[#f5f5f5] ">
+   
+    <%- include('./partials/nav.ejs') %>
+<div class="container mx-auto">
+            <div class="flex justify-center items-center mt-16">
+            
+                
+                <div class="">
+                    <form class="flex flex-col bg-[#ffffff] p-10 rounded-md shadow-md" method="post">
+
+                        <div class="formheader mb-3 text-center">
+                <h1 class="text-2xl pb-[20px]">Create an account.</h1>
+
+                        </div>
+
+                        <div class="text-red-500 mb-1 firstname"></div>
+                        <input type="text" placeholder="firstname" name="firstname" class="bg-none border rounded-lg p-4 w-[20rem] mb-2">
+                       
+
+                        <div class="text-red-500 mb-1 lastname"></div>
+                        <input type="text" placeholder="Last Name" name="lastname" class="border rounded-lg p-4 w-[20rem] mb-2">
+                        
+
+                        <div class="text-red-500 mb-1 email"></div>
+                        <input type="text" placeholder="Email" name="email" class="border rounded-lg p-4 w-[20rem] mb-2">
+                       
+
+                        <div class="text-red-500 mb-1 password"></div>
+                        <input type="password" placeholder="password" name="password" class="border rounded-lg p-4 w-[20rem] mb-3 text-gray-800">
+                       
+                        <button class="text-lg p-2 border border-red-500 rounded-lg text-black w-[20rem] duration-500 hover:bg-red-500 hover:text-white">Signup</button>
+        
+                    </form>
+                </div>
+           
+                
+            </div>
+        </div>
+    </div>
+<script>
+
+    const form =  document.querySelector('form')
+
+    const fnameError = document.querySelector('.firstname')
+    const lnameError = document.querySelector('.lastname')
+    const emailError = document.querySelector('.email')
+    const passwordError= document.querySelector('.password')
+
+    form.addEventListener('submit', async (e) => {
+
+        fnameError.textContent = ""
+        lnameError.textContent = ""
+        emailError.textContent = ""
+        passwordError.textContent = ""
+        e.preventDefault()
+
+        
+
+        const firstname= form.firstname.value
+        const lastname = form.lastname.value
+        const email = form.email.value
+        const password = form.password.value
+        try {
+           const res = await fetch('/api/signup', {
+                method: 'POST',
+                body: JSON.stringify({firstname, lastname, email, password}),
+                headers: { 'Content-Type': 'application/json' }
+            })
+            const data = await res.json()
+            if(data.errors){
+
+                const errors = data.errors
+                fnameError.textContent = errors.firstname
+                lnameError.textContent = errors.lastname
+                emailError.textContent = errors.email
+                passwordError.textContent = errors.password
+            }
+            if(data.user){
+                location.assign('/')
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    })
+
+</script>
+</body>
+</html>
