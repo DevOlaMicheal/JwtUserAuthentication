@@ -5,7 +5,7 @@ require('dotenv').config()
 const routes = require('./router/authroutes')
 const mongodb = require('./config/db')
 const cookieParser = require('cookie-parser')
-
+const {verifyJwt, checkUser} = require('./middleware/middleware')
 
 app.use(cookieParser())
 app.use(morgan('dev'))
@@ -14,7 +14,8 @@ app.use(express.static('public'))
 app.set('views')
 app.set('view engine', 'ejs')
 
-app.get('/', (req, res) => {
+
+app.get('/', checkUser, verifyJwt, (req, res) => {
     res.render('index')
 })
 
